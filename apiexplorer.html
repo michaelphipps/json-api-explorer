@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    <link href="../../favicon.ico" rel="icon">
+    <title>JSON API Explorer</title><!-- Latest compiled and minified CSS -->
+    <link href=
+    "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+    rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>JSON API Explorer</h3>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form" id="api_explorer" name="api_explorer">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <select class="form-control" id="method">
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                    <option value="PUT">PUT</option>
+                                    <option value="DELETE">DELETE</option>
+                                    <option value="OPTIONS">OPTIONS</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-9">
+                                <input class="form-control" id="url"
+                                placeholder="http://" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="body" rows=
+                        "3"></textarea>
+                    </div><!--
+<div class="form-group"><div class="row">
+
+                            <div class="col-xs-4">
+                            <input class="form-control " id="amount" name="amount" placeholder="name" required="" type=
+                            "text">
+                        </div><div class="col-xs-8">
+                        <div class="input-group">
+                            <input class="form-control " id="amount" name="amount" placeholder="value" required="" type=
+                            "text">
+                            <div class="input-group-addon">
+                                <a href="">x</a>
+                            </div></div>
+                            </div>
+                        </div>
+                    </div>
+
+<button type="button" class="btn btn-link">+ Add another parameter</button>
+-->
+                    <button class="btn btn-primary submit-button pull-right"
+                    type="submit">Launch Request</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <fieldset>
+                    <legend>Result</legend>
+                    <pre class="well" id="result" style="overflow-wrap: break-word;">...</pre>
+                </fieldset>
+            </div>
+        </div>
+        <footer class="footer">
+            <p>&copy; 2016 Phippsy</p>
+        </footer>
+    </div><!-- /container -->
+    <script src="http://code.jquery.com/jquery-latest.min.js">
+    </script> 
+    <script>
+        $(function() {
+          $("#api_explorer").on("submit", function(event) {
+              event.preventDefault();
+              //var data = $("#frm_login").formToJson();
+              var endpoint = $("#url").val();
+              $("#result").text("");
+              $.ajax({
+                  method: $("#method").val(),
+                  url: endpoint,
+                  data: $("#body").val()
+              }).done(function(msg) {
+                  console.log(msg);
+                  $("#result").text(JSON.stringify(msg,
+                      null, 2));
+              }).fail(function(msg) {
+                  console.log(msg);
+                  if (msg.responseText) {
+                      $("#result").text(JSON.stringify(JSON
+                          .parse(msg.responseText),
+                          null, 2));
+                  } else {
+                      $("#result").text(JSON.stringify(msg.responseJSON,
+                          null, 2));
+                  }
+              });
+          });
+        });
+    </script>
+</body>
+</html>
